@@ -11,7 +11,6 @@ const LiveMatchPage = async ({
   }
   const liveMatch = await getMatchLiveVideo(matchId);
 
-  console.log(liveMatch);
   if (!liveMatch) {
     return null;
   }
