@@ -14,7 +14,7 @@ const LeaguesMatchList = ({leagueMatchList}:LeaguesMatchListProps) => {
             {
               leagueMatch.matchList.map((match:any,index:number)=>(
                 <div key={index}>
-                   <LiveMatch isLive={match.isLive} opponent={match.opponents}/>
+                   <LiveMatch matchId={match.matchId} isLive={match.isLive} opponent={match.opponents}/>
                 </div>
               ))
             }

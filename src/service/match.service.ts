@@ -1,7 +1,8 @@
 import FBApi from "../libs/axiosInstance";
 
+const key = process.env.NEXT_PUBLIC_API_KEY;
+
 const getLiveMatch = async () => {
-  const key = process.env.NEXT_PUBLIC_API_KEY;
   try {
     const res = await FBApi.get(
       `/match-list?leagueIdList=&liveOnly=true&timeZone=Asia/Rangoon&key=${key}`
@@ -11,8 +12,8 @@ const getLiveMatch = async () => {
     console.error(error);
   }
 };
+
 const getNextMatch = async () => {
-  const key = process.env.NEXT_PUBLIC_API_KEY;
   try {
     const res = await FBApi.get(
       `/match/nextFiveMatch?matchId=2598992&key=${key}`
@@ -23,4 +24,16 @@ const getNextMatch = async () => {
   }
 };
 
-export { getLiveMatch, getNextMatch };
+const getMatchLiveVideo = async (matchId: string) => {
+  try {
+    const res = await FBApi.get(
+      `match-score?timeZone=Asia/Rangoon&key=${key}&matchId=${matchId}`
+    );
+
+    return res.data.result;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export { getLiveMatch, getNextMatch,getMatchLiveVideo };

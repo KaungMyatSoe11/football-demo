@@ -1,13 +1,15 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 
 interface LiveMatchProps {
   isLive: boolean;
   opponent: any[];
+  matchId:string;
 }
-export default function LiveMatch({ isLive, opponent }: LiveMatchProps) {
+export default function LiveMatch({ isLive, opponent,matchId }: LiveMatchProps) {
   return (
-    <>
+    <Link href={`/live/${matchId}`}>
       <div className="mb-5 bg-gradient-to-r from-[#E6E6FA] to-[#D8BFD8] p-5 rounded-lg shadow-md transition-transform transform cursor-pointer">
         {isLive && (
           <div className="w-full flex justify-end mb-4">
@@ -54,6 +56,6 @@ export default function LiveMatch({ isLive, opponent }: LiveMatchProps) {
           </div>
         </div>
       </div>
-    </>
+    </Link>
   );
 }
