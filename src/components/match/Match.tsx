@@ -41,25 +41,25 @@ export default function MatchDashboard() {
     }
   };
   return (
-    <div className="h-screen flex items-center justify-center bg-gradient-to-r from-[#E6E6FA] to-[#D8BFD8]">
-      <div className="w-[30%] bg-white/80 backdrop-blur-md shadow-lg min-h-[500px] p-6 rounded-xl flex flex-col gap-8 border border-white/40">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-[#E6E6FA] to-[#D8BFD8] p-4">
+      <div className="w-full md:w-[80%] lg:w-[60%] xl:w-[30%] bg-white/80 backdrop-blur-md shadow-lg min-h-[500px] p-4 md:p-6 rounded-xl flex flex-col gap-4 md:gap-8 border border-white/40">
         {/* League Button */}
-        <button className="bg-[#483D8B] hover:bg-[#595091] transition-all duration-300 w-fit text-center cursor-pointer rounded-lg px-4 py-2 text-white font-semibold shadow-md">
+        <button className="bg-[#483D8B] hover:bg-[#595091] transition-all duration-300 w-fit text-center cursor-pointer rounded-lg px-3 md:px-4 py-1.5 md:py-2 text-sm md:text-base text-white font-semibold shadow-md">
           League
         </button>
 
         {/* Matches Section */}
-        <div className="space-y-5">
+        <div className="space-y-3 md:space-y-5">
           {/* Action Buttons */}
-          <div className="flex gap-5 items-center justify-center">
+          <div className="flex gap-3 md:gap-5 items-center justify-center flex-wrap">
             {menus.map((menu) => (
               <button
                 key={menu.id}
                 className={`${
                   active === menu.name
-                    ? `bg-[${menu.color}] hover-[${menu.hoverColor}] text-white`
+                    ? `bg-[${menu.color}] hover:bg-[${menu.hoverColor}] text-white`
                     : "border-2 border-slate-400 text-blue-800"
-                } transition-all duration-300 cursor-pointer rounded-lg px-4 py-2 font-semibold shadow-md`}
+                } transition-all duration-300 cursor-pointer rounded-lg px-3 md:px-4 py-1.5 md:py-2 text-sm md:text-base font-semibold shadow-md`}
                 onClick={() => handleMenu(menu.name, menu.id)}
               >
                 {menu.name}
@@ -68,22 +68,22 @@ export default function MatchDashboard() {
           </div>
 
           {/* Live Match Component */}
-          <div className="space-y-4 overflow-auto h-[500px] rounded-lg border border-gray-200 shadow-md bg-white p-4">
+          <div className="space-y-4 overflow-auto h-[400px] md:h-[500px] rounded-lg border border-gray-200 shadow-md bg-white p-3 md:p-4">
             {Boolean(!leagueMatchList) ? (
-              <div>
-                <h1>Loading...</h1>
+              <div className="flex items-center justify-center h-full">
+                <h1 className="text-lg md:text-xl">Loading...</h1>
               </div>
             ) : active === "Live" && leagueMatchList ? (
               <LeaguesMatchList leagueMatchList={leagueMatchList} />
             ) : Boolean(!next5Match) ? (
-              <div>
-                <h1>Loading...</h1>
+              <div className="flex items-center justify-center h-full">
+                <h1 className="text-lg md:text-xl">Loading...</h1>
               </div>
             ) : next5Match ? (
               <Next5Match nextMatch={next5Match} />
             ) : (
-              <div>
-                <h1>Not Found</h1>
+              <div className="flex items-center justify-center h-full">
+                <h1 className="text-lg md:text-xl">Not Found</h1>
               </div>
             )}
           </div>
