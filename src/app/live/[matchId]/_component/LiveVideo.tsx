@@ -24,6 +24,7 @@ export default function LiveVideo({ streams }: LiveVideoProps) {
     <div className="aspect-video w-full">
       {isClient && (
         <>
+        {currentStream.url}
           <ReactPlayer 
             url={currentStream.url} 
             controls 
