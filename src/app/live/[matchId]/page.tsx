@@ -14,9 +14,11 @@ const LiveMatchPage = async ({
   if (!liveMatch) {
     return null;
   }
+  console.log(liveMatch);
+  
   return (
     <div>
-        {liveMatch.liveStreamUrl[0].url}
+        {/* {liveMatch.liveStreamUrl[0].url} */}
         <LiveVideo streams={liveMatch.liveStreamUrl} />
     </div>
   );
