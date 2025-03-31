@@ -23,4 +23,16 @@ const getNextMatch = async () => {
   }
 };
 
-export { getLiveMatch, getNextMatch };
+const getLiveStream = async (matchId:string) => {
+  const key = process.env.NEXT_PUBLIC_API_KEY;
+  try {
+    const res = await FBApi.get(
+      `/match-score?matchId=${matchId}&timeZone=Asia/Rangoon&key=${key}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export { getLiveMatch, getNextMatch ,getLiveStream };

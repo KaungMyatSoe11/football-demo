@@ -1,14 +1,29 @@
 "use client";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface LiveMatchProps {
   isLive: boolean;
   opponent: any[];
+  matchId: number;
 }
-export default function LiveMatch({ isLive, opponent }: LiveMatchProps) {
+export default function LiveMatch({
+  isLive,
+  opponent,
+  matchId,
+}: LiveMatchProps) {
+  const router = useRouter();
+  const handleLiveShow = () => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("matchId", matchId.toString());
+    router.push(`${window.location.pathname}video?${params}`);
+  };
   return (
     <>
-      <div className="mb-5 bg-gradient-to-r from-[#E6E6FA] to-[#D8BFD8] p-5 rounded-lg shadow-md transition-transform transform cursor-pointer">
+      <div
+        onClick={handleLiveShow}
+        className="mb-5 bg-gradient-to-r from-[#E6E6FA] to-[#D8BFD8] p-5 rounded-lg shadow-md transition-transform transform cursor-pointer"
+      >
         {isLive && (
           <div className="w-full flex justify-end mb-4">
             <div className="bg-[#FF0000] w-fit flex gap-1 items-center px-2 py-1 rounded">

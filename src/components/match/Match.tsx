@@ -1,8 +1,8 @@
 "use client";
 import { getLiveMatch, getNextMatch } from "@/service/match.service";
 import { useEffect, useState } from "react";
-import LeaguesMatchList from "../leagues/LeaguesMatchList";
 import Next5Match from "../futureMatch/Next5Match";
+import LivesMatchList from "../liveMatch/LiveMatchList";
 
 export default function MatchDashboard() {
   const menus = [
@@ -20,12 +20,16 @@ export default function MatchDashboard() {
     },
   ];
   const [active, setActive] = useState<string>("Live");
-  const [leagueMatchList, setLeagueMatchList] = useState<[] | null>(null);
+  // const [liveMatchesList, setLiveMatchesList] = useState<[] | null>(null);
+  const [liveMatchResult, setLiveMatchResult] = useState<string | null>(null);
+  // console.log(liveMatchesList);
+
   const [next5Match, setNext5Match] = useState<[] | null>(null);
   useEffect(() => {
     const fetchLiveMatch = async () => {
       const liveMatchData = await getLiveMatch();
-      setLeagueMatchList(liveMatchData.result.leagueMatchList);
+      setLiveMatchResult(liveMatchData.result);
+      // setLiveMatchesList(liveMatchData.result.leagueMatchList);
     };
     fetchLiveMatch();
   }, []);
@@ -33,7 +37,8 @@ export default function MatchDashboard() {
     setActive(name);
     if (id === "1") {
       const fetchLiveMatch = await getLiveMatch();
-      setLeagueMatchList(fetchLiveMatch.result.leagueMatchList);
+      setLiveMatchResult(fetchLiveMatch.result);
+      // setLiveMatchesList(fetchLiveMatch.result.leagueMatchList);
     }
     if (id === "2") {
       const nextMatch = await getNextMatch();
@@ -69,13 +74,13 @@ export default function MatchDashboard() {
 
           {/* Live Match Component */}
           <div className="space-y-4 overflow-auto h-[500px] rounded-lg border border-gray-200 shadow-md bg-white p-4">
-            {Boolean(!leagueMatchList) ? (
+            {!liveMatchResult ? (
               <div>
                 <h1>Loading...</h1>
               </div>
-            ) : active === "Live" && leagueMatchList ? (
-              <LeaguesMatchList leagueMatchList={leagueMatchList} />
-            ) : Boolean(!next5Match) ? (
+            ) : active === "Live" && liveMatchResult ? (
+              <LivesMatchList liveMatchResult={liveMatchResult} />
+            ) : !next5Match ? (
               <div>
                 <h1>Loading...</h1>
               </div>
