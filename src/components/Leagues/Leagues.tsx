@@ -19,7 +19,7 @@ const Leagues = ({ leagueList }: LeaguesProps) => {
   };
   return (
     <div className="flex overflow-auto text-nowrap gap-5">
-      {leagueList.categories[0].countries.map((item: any, index: number) => {
+      {leagueList?.categories[0].countries.map((item: any, index: number) => {
         return (
           <div key={index}>
             <button

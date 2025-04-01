@@ -1,13 +1,14 @@
 "use client";
+
+import { useEffect, useState } from "react";
+import Next5Match from "../futureMatch/Next5Match";
+import LivesMatchList from "../liveMatch/LiveMatchList";
+import Leagues from "../Leagues/Leagues";
 import {
   getLeagueList,
   getLiveMatch,
   getNextMatch,
 } from "@/service/match.service";
-import { useEffect, useState } from "react";
-import Next5Match from "../futureMatch/Next5Match";
-import LivesMatchList from "../liveMatch/LiveMatchList";
-import Leagues from "../Leagues/Leagues";
 
 export default function MatchDashboard() {
   const menus = [
@@ -25,7 +26,9 @@ export default function MatchDashboard() {
     },
   ];
   const [active, setActive] = useState<string>("Live");
-  const [leagueList, setLeagueList] = useState<[] | null>(null)
+  const [leagueList, setLeagueList] = useState<[] | null>(null);
+  console.log(leagueList);
+
   const [liveMatchResult, setLiveMatchResult] = useState<string | null>(null);
 
   const [next5Match, setNext5Match] = useState<[] | null>(null);
@@ -33,8 +36,8 @@ export default function MatchDashboard() {
     const fetchLiveMatch = async () => {
       const liveMatchData = await getLiveMatch();
       setLiveMatchResult(liveMatchData.result);
-      const leagueLists =await getLeagueList();
-      setLeagueList(leagueLists.result)
+      const leagueLists = await getLeagueList();
+      setLeagueList(leagueLists.result);
     };
     fetchLiveMatch();
   }, []);
@@ -54,7 +57,7 @@ export default function MatchDashboard() {
     <div className="h-screen flex items-center justify-center bg-gradient-to-r from-[#E6E6FA] to-[#D8BFD8]">
       <div className="w-[30%] bg-white/80 backdrop-blur-md shadow-lg min-h-[500px] p-6 rounded-xl flex flex-col gap-8 border border-white/40">
         {/* League Button */}
-        <Leagues leagueList={leagueList}/>
+        <Leagues leagueList={leagueList} />
         {/* Matches Section */}
         <div className="space-y-5">
           {/* Action Buttons */}

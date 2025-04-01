@@ -27,7 +27,30 @@ const getNextMatch = async () => {
 const getMatchLiveVideo = async (matchId: string) => {
   try {
     const res = await FBApi.get(
-      `match-score?timeZone=Asia/Rangoon&key=${key}&matchId=${matchId}`
+      `/match-score?timeZone=Asia/Rangoon&key=${key}&matchId=${matchId}`
+    );
+
+    return res.data.result;
+  } catch (error) {
+    console.error(error);
+  }
+};
+const getLeagueList = async () => {
+  try {
+    const res = await FBApi.get(`/soccerLeague/leagueList?&key=${key}`);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const getLeagueListByCountryName = async (
+  leagueKey: string,
+  tomorrowDate: string
+) => {
+  try {
+    const res = await FBApi.get(
+      `/match/getFixtureByLeague/date?leagueKey=${leagueKey}&type=2&matchDate=${tomorrowDate}&subLeagueId=&timeZone=Asia/Rangoon&isCallInterval=true&key=${key}`
     );
 
     return res.data.result;
@@ -36,4 +59,10 @@ const getMatchLiveVideo = async (matchId: string) => {
   }
 };
 
-export { getLiveMatch, getNextMatch,getMatchLiveVideo };
+export {
+  getLiveMatch,
+  getNextMatch,
+  getMatchLiveVideo,
+  getLeagueList,
+  getLeagueListByCountryName,
+};
