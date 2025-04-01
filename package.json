@@ -17,7 +17,9 @@
     "next-video": "^2.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-player": "^2.16.0"
+    "react-player": "^2.16.0",
+    "video.js": "^8.22.0",
+    "videojs-contrib-hls": "^5.15.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

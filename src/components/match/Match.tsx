@@ -52,7 +52,7 @@ export default function MatchDashboard() {
   };
   return (
     <div className="h-screen flex items-center justify-center bg-gradient-to-r from-[#E6E6FA] to-[#D8BFD8]">
-      <div className="mt-20 w-full bg-white/80 backdrop-blur-md shadow-lg min-h-[500px] p-6 rounded-xl flex flex-col gap-8 border border-white/40">
+      <div className="w-[30%] bg-white/80 backdrop-blur-md shadow-lg min-h-[500px] p-6 rounded-xl flex flex-col gap-8 border border-white/40">
         {/* League Button */}
         <Leagues leagueList={leagueList}/>
         {/* Matches Section */}
