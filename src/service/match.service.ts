@@ -23,7 +23,7 @@ const getNextMatch = async () => {
   }
 };
 
-const getLiveStream = async (matchId:string) => {
+const getLiveStream = async (matchId: string) => {
   const key = process.env.NEXT_PUBLIC_API_KEY;
   try {
     const res = await FBApi.get(
@@ -35,4 +35,34 @@ const getLiveStream = async (matchId:string) => {
   }
 };
 
-export { getLiveMatch, getNextMatch ,getLiveStream };
+const getLeagueList = async () => {
+  const key = process.env.NEXT_PUBLIC_API_KEY;
+  try {
+    const res = await FBApi.get(`/soccerLeague/leagueList?&key=${key}`);
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+const getLeagueListByCountryName = async (
+  leagueKey: string,
+  todayDate: string
+) => {
+  const key = process.env.NEXT_PUBLIC_API_KEY;
+  try {
+    const res = await FBApi.get(
+      `/match/getFixtureByLeague/date?leagueKey=${leagueKey}&type=2&matchDate=${todayDate}&subLeagueId=&timeZone=Asia/Rangoon&isCallInterval=true&key=${key}`
+    );
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export {
+  getLiveMatch,
+  getNextMatch,
+  getLiveStream,
+  getLeagueList,
+  getLeagueListByCountryName,
+};
