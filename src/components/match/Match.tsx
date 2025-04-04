@@ -10,39 +10,46 @@ import {
   getNextMatch,
 } from "@/service/match.service";
 import dateFormat from "dateformat";
+import TodayLeagues from "../todayLeagues/TodayLeagues";
+import TomorrowLeagues from "../tomorrowLeagues/TomorrowLeagues";
+
+interface Match {
+  match: string;
+  day: number;
+  matchTime: string;
+}
+
+interface Team {
+  name: string;
+  matches: Match[];
+}
+
+interface nextMatch {
+  homeTeam: Team;
+  awayTeam: Team;
+}
 
 export default function MatchDashboard() {
   const menus = [
-    {
-      id: "1",
-      name: "Live",
-      color: "#FF0000",
-      hoverColor: "#FF4444",
-    },
-    {
-      id: "2",
-      name: "Today Match",
-      color: "#483D8B",
-      hoverColor: "#595091",
-    },
+    { id: "1", name: "Live", color: "#FF0000", hoverColor: "#FF4444" },
+    { id: "2", name: "Today Match", color: "#483D8B", hoverColor: "#595091" },
     {
       id: "3",
       name: "Tomorrow Match",
       color: "#483D8B",
       hoverColor: "#595091",
     },
-    {
-      id: "4",
-      name: "Next 5 Match",
-      color: "#483D8B",
-      hoverColor: "#595091",
-    },
+    { id: "4", name: "Next 5 Match", color: "#483D8B", hoverColor: "#595091" },
   ];
+
   const [active, setActive] = useState<string>("Live");
   const [activeLeague, setActiveLeague] = useState<string>("");
   const [leagueList, setLeagueList] = useState<[] | null>(null);
   const [liveMatchResult, setLiveMatchResult] = useState<string | null>(null);
-  const [next5Match, setNext5Match] = useState<[] | null>(null);
+  const [next5Match, setNext5Match] = useState<nextMatch | null>(null);
+  const [todayLeagues, setTodayLeagues] = useState(null);
+  const [tomorrowLeagues, setTomorrowLeagues] = useState(null);
+
   useEffect(() => {
     const fetchLiveMatch = async () => {
       const liveMatchData = await getLiveMatch();
@@ -52,31 +59,28 @@ export default function MatchDashboard() {
     };
     fetchLiveMatch();
   }, []);
+
   const handleMenu = async (name: string, id: string) => {
     setActive(name);
     if (id === "1") {
       const fetchLiveMatch = await getLiveMatch();
       setLiveMatchResult(fetchLiveMatch.result);
-      // setLiveMatchesList(fetchLiveMatch.result.leagueMatchList);
     }
-
     if (id === "2") {
-      console.log("Hello today..");
-
       const today = new Date();
       const date = dateFormat(today, "yyyy-mm-dd");
       const todayLeague = await getLeagueListByCountryName(activeLeague, date);
-      console.log("todayLeague", todayLeague);
+      setTodayLeagues(todayLeague);
     }
     if (id === "3") {
       const today = new Date();
-      today.setDate(today.getDate() + 1); // Add 1 day to get tomorrow
-      const date = dateFormat(today, "yyyy-mm-dd"); // Format the updated date
+      today.setDate(today.getDate() + 1);
+      const date = dateFormat(today, "yyyy-mm-dd");
       const tomorrowLeague = await getLeagueListByCountryName(
         activeLeague,
         date
       );
-      console.log("tomorrowLeague", tomorrowLeague);
+      setTomorrowLeagues(tomorrowLeague);
     }
     if (id === "4") {
       const nextMatch = await getNextMatch();
@@ -85,51 +89,44 @@ export default function MatchDashboard() {
   };
 
   const renderMatchContent = () => {
-    if (active === "Live" && liveMatchResult) {
+    if (active === "Live" && liveMatchResult)
       return <LivesMatchList liveMatchResult={liveMatchResult} />;
-    } else if (active === "Today Match") {
-      return (
-        <div>
-          <h1>Today..</h1>
-        </div>
-      );
-    } else if (active === "Tomorrow Match") {
-      return (
-        <div>
-          <h1>Tomorrow...</h1>
-        </div>
-      );
-    } else if (active === "Next 5 Match" && next5Match) {
+    if (active === "Today Match" && todayLeagues)
+      return <TodayLeagues todayLeagues={todayLeagues} />;
+    if (active === "Tomorrow Match" && tomorrowLeagues)
+      return <TomorrowLeagues tomorrowLeagues={tomorrowLeagues} />;
+    if (active === "Next 5 Match" && next5Match)
       return <Next5Match nextMatch={next5Match} />;
-    }
-    return (
-      <div>
-        <h1>Loading...</h1>
-      </div>
-    );
+    return <div className="text-center text-gray-500">Loading...</div>;
   };
 
   return (
-    <div className="h-screen flex items-center justify-center bg-gradient-to-r from-[#E6E6FA] to-[#D8BFD8]">
-      <div className="w-[50%] bg-white/80 backdrop-blur-md shadow-lg min-h-[500px] p-6 rounded-xl flex flex-col gap-8 border border-white/40">
-        {/* League Button */}
+    <div className="h-screen flex items-center justify-center bg-gradient-to-r from-[#E6E6FA] to-[#D8BFD8] px-4">
+      <div className="w-full sm:w-[90%] md:w-[70%] lg:w-[50%] bg-white/80 backdrop-blur-md shadow-lg min-h-[500px] p-6 rounded-xl flex flex-col gap-6 border border-white/40">
+        {/* League Selection */}
         <Leagues
           leagueList={leagueList}
           activeLeague={activeLeague}
           setActiveLeague={setActiveLeague}
+          active={active}
+          setTodayLeagues={setTodayLeagues}
+          setTomorrowLeagues={setTomorrowLeagues}
         />
+
         {/* Matches Section */}
-        <div className="space-y-5">
-          {/* Action Buttons */}
-          <div className="flex gap-5 items-center justify-center">
+        <div className="space-y-4">
+          {/* Menu Buttons */}
+          <div className="flex flex-wrap gap-3 items-center justify-center">
             {menus.map((menu) => (
               <button
                 key={menu.id}
-                className={`${
-                  active === menu.name
-                    ? `bg-[${menu.color}] hover-[${menu.hoverColor}] text-white`
-                    : "border-2 border-slate-400 text-blue-800"
-                } transition-all duration-300 cursor-pointer rounded-lg px-4 py-2 font-semibold shadow-md`}
+                className={`px-4 py-2 font-semibold shadow-md rounded-lg transition-all duration-300
+                  ${
+                    active === menu.name
+                      ? "bg-red-500 text-white"
+                      : "border border-gray-400 text-blue-800"
+                  }
+                `}
                 onClick={() => handleMenu(menu.name, menu.id)}
               >
                 {menu.name}
@@ -137,8 +134,8 @@ export default function MatchDashboard() {
             ))}
           </div>
 
-          {/* Live Match Component */}
-          <div className="space-y-4 overflow-auto h-[500px] rounded-lg border border-gray-200 shadow-md bg-white p-4">
+          {/* Match Content */}
+          <div className="overflow-auto h-[400px] sm:h-[450px] md:h-[500px] rounded-lg border border-gray-200 shadow-md bg-white p-4">
             {renderMatchContent()}
           </div>
         </div>
