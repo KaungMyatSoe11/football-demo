@@ -44,13 +44,10 @@ const getLeagueList = async () => {
   }
 };
 
-const getLeagueListByCountryName = async (
-  leagueKey: string,
-  tomorrowDate: string
-) => {
+const getLeagueListByCountryName = async (leagueKey: string, date: string) => {
   try {
     const res = await FBApi.get(
-      `/match/getFixtureByLeague/date?leagueKey=${leagueKey}&type=2&matchDate=${tomorrowDate}&subLeagueId=&timeZone=Asia/Rangoon&isCallInterval=true&key=${key}`
+      `/match/getFixtureByLeague/date?leagueKey=${leagueKey}&type=2&matchDate=${date}&subLeagueId=&timeZone=Asia/Rangoon&isCallInterval=true&key=${key}`
     );
 
     return res.data.result;
